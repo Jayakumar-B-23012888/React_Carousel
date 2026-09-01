@@ -1,4 +1,4 @@
-```jsx
+
 import { useEffect, useState } from "react";
 import "./ImageCarousel.css";
 
@@ -90,4 +90,3 @@ function ImageCarousel() {
 }
 
 export default ImageCarousel;
-```
