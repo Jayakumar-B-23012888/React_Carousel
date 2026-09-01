@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+```jsx
+import { useEffect, useState } from "react";
 import "./ImageCarousel.css";
 
 function ImageCarousel() {
@@ -6,28 +7,33 @@ function ImageCarousel() {
     "https://picsum.photos/id/1015/900/500",
     "https://picsum.photos/id/1016/900/500",
     "https://picsum.photos/id/1018/900/500",
-    "https://picsum.photos/id/1025/900/500"
+    "https://picsum.photos/id/1025/900/500",
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
   function nextImage() {
-    setCurrentIndex((currentIndex + 1) % images.length);
+    setCurrentIndex(
+      (prevIndex) => (prevIndex + 1) % images.length
+    );
   }
 
   function previousImage() {
     setCurrentIndex(
-      (currentIndex - 1 + images.length) % images.length
+      (prevIndex) =>
+        (prevIndex - 1 + images.length) % images.length
     );
   }
 
   useEffect(() => {
     const interval = setInterval(() => {
-      nextImage();
+      setCurrentIndex(
+        (prevIndex) => (prevIndex + 1) % images.length
+      );
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [currentIndex]);
+  }, [images.length]);
 
   return (
     <div className="carousel-container">
@@ -37,18 +43,20 @@ function ImageCarousel() {
         <button
           className="arrow left"
           onClick={previousImage}
+          aria-label="Previous image"
         >
           &#10094;
         </button>
 
         <img
           src={images[currentIndex]}
-          alt="Carousel"
+          alt={`Carousel ${currentIndex + 1}`}
         />
 
         <button
           className="arrow right"
           onClick={nextImage}
+          aria-label="Next image"
         >
           &#10095;
         </button>
@@ -62,6 +70,14 @@ function ImageCarousel() {
               index === currentIndex ? "dot active" : "dot"
             }
             onClick={() => setCurrentIndex(index)}
+            role="button"
+            tabIndex="0"
+            aria-label={`Go to image ${index + 1}`}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                setCurrentIndex(index);
+              }
+            }}
           ></span>
         ))}
       </div>
@@ -74,3 +90,4 @@ function ImageCarousel() {
 }
 
 export default ImageCarousel;
+```
